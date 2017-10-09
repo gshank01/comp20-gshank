@@ -1,0 +1,18 @@
+/*put a background on this shit*/
+head { 
+    font-family: helvetica;
+    font-size: 28px;
+}
+
+h1 {
+	font-family: helvetica;
+    font-size: 26px;	
+    text-align: center;
+}
+body {
+	  text-align: center;
+	font-family: helvetica;
+    font-size: 16px;
+	background-image: linear-gradient(to bottom, green 0%, yellow 100%);
+    background-blend-mode: multiply;
+}
