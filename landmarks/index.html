@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body { /*https://developers.google.com/maps/documentation/javascript/tutorial*/
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <div id="map"></div>
+    <script>
+      var map;
+      var myLat = 0;
+      var myLng = 0;
+
+      getMyLocation();
+
+      function getMyLocation() { //WebProgramming/blob/gh-pages/examples/google_maps/getmylocation.html
+        console.log("Hit Me One");
+        if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
+          console.log("Hit Me Two");
+          navigator.geolocation.getCurrentPosition(function(position) {
+              console.log("Hit Me Three");
+              myLat = position.coords.latitude;
+              myLng = position.coords.longitude;
+              console.log("kick me " + myLat + " " + myLng);
+              initMap();
+            });
+        }      
+        else {
+          alert("Geolocation is not supported by your web browser.  What a shame!");
+        }
+        console.log("Hit Me Four "+ myLat + " " + myLng);
+      }       
+
+      function initMap() { //https://developers.google.com/maps/documentation/javascript/tutorial
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: myLat, lng: myLng},
+          zoom: 12    
+
+        }          
+        );}     
+          if (myLat > 0){
+            getData(myLat, myLng);
+            console.log("calling getData "+myLat+" "+myLng);
+          }
+    </script>
+  </head>
+
+  <body>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7K5Uj6xensRxtLoZxMPbwjpwQPQDnMRY&callback=initMap"
+    async defer></script>
+   
+    <script>
+
+function getData(Lat, Lng) {
+      console.log("inside getData");
+  var request = new XMLHttpRequest();
+      request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
+      request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      request.onreadystatechange = function() {
+            console.log("inside getData request");
+      if (request.readyState == 4 && request.status == 200)  {
+ // step 5: do something w response data
+        elements = JSON.parse(request.responseText);
+        console.log(request.responseText);
+      }
+      else {
+        console.log("not done");
+      }
+    //concatenate the information    
+      var login = "login=JwCmNgOP";
+      var latxmr = "&lat=";
+      var strlat = Lat;
+      var lngxmr = "&lng=";
+      var strlng = Lng;
+
+      var key = login.concat(latxmr, strlat, lngxmr, strlng);
+      console.log(key);
+  // step 4: actually send the request
+      request.send(key);
+      }
+};
+
+    function putMe(){};//puts the myloc dot down
+
+    function putThem(){};//this baby is gonna use the other ps data to put em on the map
+
+    </script>
+
+
+
+
+
+  </body>
+</html>
