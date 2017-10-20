@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Simple Map</title>
+    <title>Landmarks</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
     <style>
@@ -33,10 +33,8 @@
               initMap();
             });
         }      
-        else {
-          alert("Geolocation is not supported by your web browser.  What a shame!");
-        }
-      } 
+      }
+
         function initMap() { //https://developers.google.com/maps/documentation/javascript/tutorial
           map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: myLat, lng: myLng},
@@ -55,10 +53,9 @@
 
         if (strlat > 0){
         var key = login.concat(latxmr, strlat, lngxmr, strlng);
-        console.log(key);
         request.send(key);
+        renderMap();
         }
-        else {console.log("not yet");}
         }
 
 </script>
@@ -76,15 +73,49 @@
       request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
       request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       request.onreadystatechange = function() {
-            console.log("inside of request");
       if (request.readyState == 4 && request.status == 200)  {
         elements = JSON.parse(request.responseText);
-        console.log(request.responseText);
-      }
-      else {
-        console.log("not done");
       }}
 
+      var marker;
+      var infowindow = new google.maps.InfoWindow();
+
+      function renderMap(){//https://tuftsdev.github.io/WebProgramming/examples/google_maps/geolocation_map.html
+          me = new google.maps.LatLng(myLat, myLng);  
+          // Create a marker
+          marker = new google.maps.Marker({
+          position: me,
+          title: "user location"
+          });
+          marker.setMap(map);
+    
+          // Open info window on click of marker
+        google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(marker.title);
+        infowindow.open(map, marker);
+        });
+    }
+  var thLat = -9999;
+  var thLng = -9999;
+
+      function themMap(){
+        them = new google.maps.LatLng(thLat, thLng);
+
+        for (i=0, i<100, i++){
+          //go through JSON data and mark 100 user entries, changing inputting their Lat and Lng into
+          //thLat and thLng, making a marker with login for each on map
+          marker = new google.maps.Marker({
+          position: them,
+          title: "user location"//their login, in future
+          });
+          marker.setMap(map);
+        }
+
+        google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(marker.title);
+        infowindow.open(map, marker);
+        }
+      }
 
 
              
