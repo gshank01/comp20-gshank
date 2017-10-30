@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Captain's Log</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+
+    $(document).ready(function() {
+            runme();
+    });
+
+
+    function runme() { //https://github.com/gshank01/WebProgramming/blob/gh-pages/examples/cookies_localstorage/localstorage_example.html
+        var today = new Date();
+        localStorage.setItem('date', 'today');
+        elem = document.getElementById("header");
+        console.log("<h1>The phrase that pays is " + localStorage['date'] + "</h1>");
+        elem.innerHTML = "<h1>The phrase that pays is " + localStorage['date'] + "</h1>";
+    }
+    
+    function reload() {
+        elem = document.getElementById("results");
+        output = "";
+        for (key in localStorage) {
+            output = output + "<p>" + localStorage[key] + "</p>\n";
+        }
+        elem.innerHTML = output;
+    }
+    
+    function store() {
+        txt = document.getElementById("something").value;
+        localStorage[new Date().getTime()] = txt;
+        reload();
+    }
+
+
+//       console.log(new Date());
+    </script>
+</head>
+
+
+
+<body>
+    <h1>Captain's Log</h1>
+    <h3>New entry: <input type="text" id="msg" name="msg" size="30" /></h3>
+    <div id="log"></div>
+</body>
+</html>
