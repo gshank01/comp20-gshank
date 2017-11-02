@@ -9,36 +9,37 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
 
-    $(document).ready(function() {
-            runme();
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            //alert('enter key is pressed');
+            store();
+        }
     });
 
-
-    function runme() { //https://github.com/gshank01/WebProgramming/blob/gh-pages/examples/cookies_localstorage/localstorage_example.html
-        var today = new Date();
-        localStorage.setItem('date', 'today');
-        elem = document.getElementById("header");
-        console.log("<h1>The phrase that pays is " + localStorage['date'] + "</h1>");
-        elem.innerHTML = "<h1>The phrase that pays is " + localStorage['date'] + "</h1>";
-    }
-    
+    //https://github.com/gshank01/WebProgramming/blob/gh-pages/examples/cookies_localstorage/localstorage_example.html
     function reload() {
-        elem = document.getElementById("results");
-        output = "";
-        for (key in localStorage) {
-            output = output + "<p>" + localStorage[key] + "</p>\n";
+
+        for (var i=localStorage.length; i >= 0; i--)  {
+            document.getElementById("log").innerHTML =localStorage.getItem('date') + "  " +localStorage.getItem('text') ;
         }
-        elem.innerHTML = output;
-    }
+        document.getElementById("log").innerHTML =localStorage.getItem('date') + "  " +localStorage.getItem('text') ;
+    } 
     
     function store() {
-        txt = document.getElementById("something").value;
-        localStorage[new Date().getTime()] = txt;
+        //txt = document.getElementById("msg").value;
+        //localStorage[new Date().getTime()] = txt;//setting key to date for txt?
+        var data = {};
+        data.message = document.getElementById("msg").value;
+        data.date = new Date();
+
+        localStorage.setItem('text', data.message);
+        localStorage.setItem('date', data.date);
+
+        console.log("data.date =" + data.date);
+
         reload();
     }
-
-
-//       console.log(new Date());
+  
     </script>
 </head>
 
