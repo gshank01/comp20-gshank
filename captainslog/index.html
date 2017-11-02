@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
 
-    $(document).keypress(function (e) {
+    $(document).keypress(function (e) {//using jQuery
         if (e.which == 13) {
             //alert('enter key is pressed');
             store();
@@ -18,24 +18,44 @@
 
     //https://github.com/gshank01/WebProgramming/blob/gh-pages/examples/cookies_localstorage/localstorage_example.html
     function reload() {
+        elem = document.getElementById("log");
+        output = "";
 
-        for (var i=localStorage.length; i >= 0; i--)  {
-            document.getElementById("log").innerHTML =localStorage.getItem('date') + "  " +localStorage.getItem('text') ;
+        for (key in localStorage){
+            output = output + "<p>" + localStorage[key] + "</p>\n";
         }
-        document.getElementById("log").innerHTML =localStorage.getItem('date') + "  " +localStorage.getItem('text') ;
+        //elem.innerHTML = output;
+        var array = SortLocalStorage();
+        
+        elem.innerHTML = array
+        
     } 
-    
+
+    function SortLocalStorage(){
+        if(localStorage.length > 0){
+            var localStorageArray = new Array();
+            for (i=0;i<localStorage.length;i++){
+                localStorageArray[i] = localStorage.getItem(localStorage.key(i)+localStorage.value[i]);
+            }
+        }
+        var sortedArray = localStorageArray.sort();
+        return sortedArray;
+    }
+
     function store() {
-        //txt = document.getElementById("msg").value;
-        //localStorage[new Date().getTime()] = txt;//setting key to date for txt?
-        var data = {};
-        data.message = document.getElementById("msg").value;
-        data.date = new Date();
+        var txt = document.getElementById("msg").value;
 
-        localStorage.setItem('text', data.message);
-        localStorage.setItem('date', data.date);
+        var date = Date();
 
-        console.log("data.date =" + data.date);
+        var lyr = date.split("");
+
+        var stringspace = " - ";
+
+        var thestuff = date.concat(stringspace, txt);
+
+        //localStorage.setItem('items', thestuff);
+        localStorage[new Date().getTime()] = thestuff;//setting key to date for txt
+ 
 
         reload();
     }
