@@ -35,7 +35,7 @@
         if(localStorage.length > 0){
             var localStorageArray = new Array();
             for (i=0;i<localStorage.length;i++){
-                localStorageArray[i] = localStorage.getItem(localStorage.key(i)+localStorage.value[i]);
+                localStorageArray[i] = localStorage.getItem(localStorage.key(i)+localStorage.getItem("Value"));
             }
         }
         var sortedArray = localStorageArray.sort();
@@ -46,8 +46,6 @@
         var txt = document.getElementById("msg").value;
 
         var date = Date();
-
-        var lyr = date.split("");
 
         var stringspace = " - ";
 
