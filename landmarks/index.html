@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Landmarks</title>
+    <title>Landmarks by Grace</title>
     <meta name="viewport" content="initial-scale=1.0">
     <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css" />
+    <script src="landmarks.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEfYwSYNdqVB-__R0ahzNpEDSYNWa4dCo&callback=getMyLocation"
+    async defer></script>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -18,107 +22,8 @@
       }
     </style>
     <div id="map"></div>  
-<script> 
-      var map;
-      var myLat = 0;
-      var myLng = 72;
 
-    function getMyLocation() { //WebProgramming/blob/gh-pages/examples/google_maps/getmylocation.html
-        //console.log("Hit Me One");
-        if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
-          //console.log("Hit Me Two");
-          navigator.geolocation.getCurrentPosition(function(position) {
-              myLat = position.coords.latitude;
-              myLng = position.coords.longitude;
-              initMap();
-            });
-        }      
-      }
-
-        function initMap() { //https://developers.google.com/maps/documentation/javascript/tutorial
-          map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: myLat, lng: myLng},
-          zoom: 12    
-          }          
-          );
-          getData(myLat, myLng);
-        } //end of initMap
-    
-      function getData(){   
-        var login = "login=JwCmNgOP";
-        var latxmr = "&lat=";
-        var strlat = myLat;
-        var lngxmr = "&lng=";
-        var strlng = myLng;
-
-        if (strlat > 0){
-        var key = login.concat(latxmr, strlat, lngxmr, strlng);
-        request.send(key);
-        renderMap();
-        }
-        }
-
-</script>
   </head>
 
-  <body onload="getMyLocation()">
-
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAEfYwSYNdqVB-__R0ahzNpEDSYNWa4dCo&callback=initMap"
-    async defer></script>
-
-    <script>
-
-
-      var request = new XMLHttpRequest();
-      request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
-      request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      request.onreadystatechange = function() {
-      if (request.readyState == 4 && request.status == 200)  {
-        elements = JSON.parse(request.responseText);
-      }}
-
-      var marker;
-      var infowindow = new google.maps.InfoWindow();
-
-      function renderMap(){//https://tuftsdev.github.io/WebProgramming/examples/google_maps/geolocation_map.html
-          me = new google.maps.LatLng(myLat, myLng);  
-          // Create a marker
-          marker = new google.maps.Marker({
-          position: me,
-          title: "user location"
-          });
-          marker.setMap(map);
-    
-          // Open info window on click of marker
-        google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(marker.title);
-        infowindow.open(map, marker);
-        });
-    }
-  var thLat = -9999;
-  var thLng = -9999;
-
-      function themMap(){
-        them = new google.maps.LatLng(thLat, thLng);
-
-        for (i=0, i<100, i++){
-          //go through JSON data and mark 100 user entries, changing inputting their Lat and Lng into
-          //thLat and thLng, making a marker with login for each on map
-          marker = new google.maps.Marker({
-          position: them,
-          title: "user location"//their login, in future
-          });
-          marker.setMap(map);
-        }
-
-        google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(marker.title);
-        infowindow.open(map, marker);
-        }
-      }
-
-
-             
-
-
-    </script>
+  <body>
+</body>

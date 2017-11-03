@@ -11,35 +11,15 @@
 
     $(document).keypress(function (e) {//using jQuery
         if (e.which == 13) {
-            //alert('enter key is pressed');
             store();
         }
     });
 
-    //https://github.com/gshank01/WebProgramming/blob/gh-pages/examples/cookies_localstorage/localstorage_example.html
+    //ming wrote this
     function reload() {
-        elem = document.getElementById("log");
-        output = "";
-
         for (key in localStorage){
-            output = output + "<p>" + localStorage[key] + "</p>\n";
+            $("#log").prepend("<p>" + localStorage[key] + "</p>");
         }
-        //elem.innerHTML = output;
-        var array = SortLocalStorage();
-        
-        elem.innerHTML = array
-        
-    } 
-
-    function SortLocalStorage(){
-        if(localStorage.length > 0){
-            var localStorageArray = new Array();
-            for (i=0;i<localStorage.length;i++){
-                localStorageArray[i] = localStorage.getItem(localStorage.key(i)+localStorage.getItem("Value"));
-            }
-        }
-        var sortedArray = localStorageArray.sort();
-        return sortedArray;
     }
 
     function store() {
@@ -57,6 +37,7 @@
 
         reload();
     }
+    
   
     </script>
 </head>
