@@ -59,9 +59,22 @@
       me = new google.maps.LatLng(myLat, myLng);  
           // Create a marker
 
+
+          var image = { //https://developers.google.com/maps/documentation/javascript/markers#simple_icons
+            url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+            // This marker is 40 pixels wide by 64 pixels high.
+            size: new google.maps.Size(40, 64),
+            // The origin for this image is (0, 0).
+            origin: new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at (0, 32).
+            anchor: new google.maps.Point(0, 32)
+        //THESE DON'T WORK SO WELL IN HALlIGAN
+          };
+
           marker = new google.maps.Marker({
           position: me,
-          title: "user location"
+          title: "user location",
+          icon: 'purple_MarkerA.png'
           });
           marker.setMap(map);
     
@@ -85,7 +98,8 @@
           
           marker = new google.maps.Marker({
           position: thLatLng,
-          title: elements.landmarks[i].properties["Location_Name"]
+          title: elements.landmarks[i].properties["Location_Name"],
+          icon: 'green_MarkerA.png'
           });
 
        google.maps.event.addListener(marker, 'click', function() {
@@ -103,12 +117,11 @@
             lat: elements.people[i].lat, 
             lng: elements.people[i].lng
           };
-          
-          //console.log(elements.people[i].login);
 
           marker = new google.maps.Marker({
           position: thLatLng,
-          title: elements.people[i].login
+          title: elements.people[i].login,
+          icon: 'blue_MarkerA.png'
           });
 
           marker.setMap(map);
@@ -117,14 +130,8 @@
             infoWindow.setContent(marker.title);
             infoWindow.open(map, this);
 
-        })
-      }
-/*
-        google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(marker.title);
-          infowindow.open(map, marker);
-        })
-        */
+          })
+        }
       };
       
 
