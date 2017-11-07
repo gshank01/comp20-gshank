@@ -48,7 +48,7 @@
          request.onreadystatechange = function() {
          if (request.readyState == 4 && request.status == 200)  {
            elements = JSON.parse(request.responseText);
-           console.log(elements);
+           //console.log(elements);
            themMap(elements);
       }}
     }
@@ -66,7 +66,7 @@
           marker.setMap(map);
     
           // Open info window on click of marker
-        google.maps.event.addListener(marker, 'click', function() {
+       google.maps.event.addListener(marker, 'click', function() {
         infowindow.setContent(marker.title);
         infowindow.open(map, marker);
         });
@@ -74,33 +74,58 @@
 
 
       function themMap(elements){
+        infoWindow = new google.maps.InfoWindow;
 
         for (i=0; i<elements.landmarks.length; i++){
 
-          var thLat;
-          var thLng;
-
-          them = new google.maps.LatLng(thLat, thLng);
-
-          //make a string for the title
-        var id = "id: ";
-        var id_item = elements.landmarks[i].id;
-
-        var textbox = id.concat(id_item);
-        console.log(id);
+          var thLatLng = {
+            lat: elements.landmarks[i].geometry.coordinates[1], 
+            lng: elements.landmarks[i].geometry.coordinates[0]
+          };
           
           marker = new google.maps.Marker({
-          position: them,
-          title: id
+          position: thLatLng,
+          title: elements.landmarks[i].properties["Location_Name"]
           });
+
+       google.maps.event.addListener(marker, 'click', function() {
+            //infoWindow = new google.maps.InfoWindow;
+            infoWindow.setContent(this.title);
+            infoWindow.open(map, this);
+        })
+
           marker.setMap(map);
         }
 
-        google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent(marker.title);
-        infowindow.open(map, marker);
-        });
+        for (i=0; i<100; i++){
+
+          var thLatLng = {
+            lat: elements.people[i].lat, 
+            lng: elements.people[i].lng
+          };
+          
+          //console.log(elements.people[i].login);
+
+          marker = new google.maps.Marker({
+          position: thLatLng,
+          title: elements.people[i].login
+          });
+
+          marker.setMap(map);
+          google.maps.event.addListener(marker, 'click', function() {
+            //infoWindow = new google.maps.InfoWindow;
+            infoWindow.setContent(marker.title);
+            infoWindow.open(map, this);
+
+        })
       }
+/*
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(marker.title);
+          infowindow.open(map, marker);
+        })
+        */
+      };
       
 
 
