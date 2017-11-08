@@ -17,6 +17,7 @@
 
     //ming wrote this
     function reload() {
+        $("#log").html("");
         for (key in localStorage){
             $("#log").prepend("<p>" + localStorage[key] + "</p>");
         }

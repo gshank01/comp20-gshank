@@ -7,8 +7,9 @@
       var myLatLng;
       var thLatLng;
 
-      var mindist = -999;
+      var mindist = 999;
       var importantlm = "";
+      var importantlmi = 0;
 
     function getMyLocation() { //WebProgramming/blob/gh-pages/examples/google_maps/getmylocation.html
         //console.log("Hit Me One");
@@ -43,7 +44,7 @@
         var key = login.concat(latxmr, strlat, lngxmr, strlng);
         
 
-        renderMap();
+        //renderMap();
         getJSON(key);
         }
     }
@@ -58,6 +59,7 @@
            elements = JSON.parse(request.responseText);
            //console.log(elements);
            themMap(elements);
+           renderMap();
       }}
     }
 
@@ -93,44 +95,66 @@
           );
          
           var distance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, thLatLng);
-    /*    
-          if (mindist =! -999) {
-            if (distance <= mindist){
-              mindist = distance;
-              importantlm = elements.landmarks[i].properties["Location_Name"]+"<p>"+"Distance: "+distance+" m"+"</p>";
-              RenderMap();
-            };
-          };   
-     */ //we still need to make this work and to put the polyline (which is in google docs, safe and sound)        
+          
           distance = distance.toFixed(2);
+          var distmiles = distance*0.000621371;
+          distmiles = distmiles.toFixed(2);
+
+            if (distmiles <= mindist){
+              mindist = distmiles;
+              importantlm = "Nearest landmark: <p>"+elements.landmarks[i].properties["Location_Name"]+"</p><p>"+"Distance: "+distmiles+" miles"+"</p>";
+              importantlmi = i;            
+            };
+
+            if (i==elements.landmarks.length -1){
+              //get shortest flight path to landmark selected
+              thLatLng = new google.maps.LatLng(elements.landmarks[importantlmi].geometry.coordinates[1], 
+            elements.landmarks[importantlmi].geometry.coordinates[0]);
+
+              var flightPlanCoordinates = [
+                myLatLng, thLatLng
+              ];
+
+              var flightPath = new google.maps.Polyline({ //https://developers.google.com/maps/documentation/javascript/examples/polyline-simple
+                  path: flightPlanCoordinates,
+                  geodesic: true,
+                  strokeColor: '#FF0000',
+                  strokeOpacity: 1.0,
+                  strokeWeight: 2
+              });            
+
+                flightPath.setMap(map);
+          }
 
           marker = new google.maps.Marker({
             position: thLatLng,
-            title: elements.landmarks[i].properties["Location_Name"]+"<p>"+"Distance: "+distance+" m"+"</p>",
+            title: elements.landmarks[i].properties["Location_Name"]+"<p>"+"Distance: "+distmiles+" miles"+"</p>",
             icon: 'green_MarkerA.png'
           });
           marker.setMap(map);
+         
 
           google.maps.event.addListener(marker, 'click', function() {
               infoWindow.setContent(this.title);
               infoWindow.open(map, this);
               
-          });
-      };
-      }//TEMPORARY MARK.
-/*
+          }); 
+          }//end of extremely long for loop   
+
         for (i=0; i<100; i++){
           var thLatLng = new google.maps.LatLng(elements.people[i].lat, 
             elements.people[i].lng
           );
 
          var distance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, thLatLng);
-
          distance = distance.toFixed(2);
+
+        var distmiles = distance*0.000621371;
+        distmiles = distmiles.toFixed(2);
 
         marker = new google.maps.Marker({
           position: thLatLng,
-          title: elements.people[i].login+"<p>"+"Distance: "+distance+" m"+"</p>",
+          title: elements.people[i].login+"<p>"+"Distance: "+distmiles+" miles"+"</p>",
           icon: 'blue_MarkerA.png'
         });
 
@@ -143,6 +167,6 @@
         }
       };
       
-*/
+
 
              
