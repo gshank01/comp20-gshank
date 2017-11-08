@@ -117,7 +117,7 @@
               
           });
       };
-      }//TEMPORARY MARK
+      }//TEMPORARY MARK.
 /*
         for (i=0; i<100; i++){
           var thLatLng = new google.maps.LatLng(elements.people[i].lat, 
