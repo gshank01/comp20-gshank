@@ -4,6 +4,12 @@
       var marker;
       var infowindow;
 
+      var myLatLng;
+      var thLatLng;
+
+      var mindist = -999;
+      var importantlm = "";
+
     function getMyLocation() { //WebProgramming/blob/gh-pages/examples/google_maps/getmylocation.html
         //console.log("Hit Me One");
         if (navigator.geolocation) { // the navigator.geolocation object is supported on your browser
@@ -11,6 +17,7 @@
           navigator.geolocation.getCurrentPosition(function(position) {
               myLat = position.coords.latitude;
               myLng = position.coords.longitude;
+              myLatLng = new google.maps.LatLng(myLat, myLng);
               initMap();
             });
         }      
@@ -19,7 +26,7 @@
     function initMap() { //https://developers.google.com/maps/documentation/javascript/tutorial
           map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: myLat, lng: myLng},
-          zoom: 12    
+          zoom: 14    
           }          
           );
           getData(myLat, myLng);
@@ -59,21 +66,9 @@
       me = new google.maps.LatLng(myLat, myLng);  
           // Create a marker
 
-
-          var image = { //https://developers.google.com/maps/documentation/javascript/markers#simple_icons
-            url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
-            // This marker is 40 pixels wide by 64 pixels high.
-            size: new google.maps.Size(40, 64),
-            // The origin for this image is (0, 0).
-            origin: new google.maps.Point(0, 0),
-            // The anchor for this image is the base of the flagpole at (0, 32).
-            anchor: new google.maps.Point(0, 32)
-        //THESE DON'T WORK SO WELL IN HALlIGAN
-          };
-
           marker = new google.maps.Marker({
           position: me,
-          title: "user location",
+          title: importantlm,
           icon: 'purple_MarkerA.png'
           });
           marker.setMap(map);
@@ -91,45 +86,58 @@
 
         for (i=0; i<elements.landmarks.length; i++){
 
-          var thLatLng = {
-            lat: elements.landmarks[i].geometry.coordinates[1], 
-            lng: elements.landmarks[i].geometry.coordinates[0]
-          };
-          
+          var thLatLng = new google.maps.LatLng(elements.landmarks[i].geometry.coordinates[1], 
+            elements.landmarks[i].geometry.coordinates[0]
+          );
+         
+          var distance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, thLatLng);
+        
+          /*if (mindist =! -999) {
+            if (distance <= mindist){
+              mindist = distance;
+              importantlm = elements.people[i].login+"<p>"+"Distance: "+distance+" m"+"</p>";
+            };
+          };   
+          */   
+          distance = distance.toFixed(2);
+
           marker = new google.maps.Marker({
-          position: thLatLng,
-          title: elements.landmarks[i].properties["Location_Name"],
-          icon: 'green_MarkerA.png'
+            position: thLatLng,
+            title: elements.landmarks[i].properties["Location_Name"]+"<p>"+"Distance: "+distance+" m"+"</p>",
+            icon: 'green_MarkerA.png'
           });
-
-       google.maps.event.addListener(marker, 'click', function() {
-            //infoWindow = new google.maps.InfoWindow;
-            infoWindow.setContent(this.title);
-            infoWindow.open(map, this);
-        })
-
           marker.setMap(map);
-        }
+
+          google.maps.event.addListener(marker, 'click', function() {
+              infoWindow.setContent(this.title);
+              infoWindow.open(map, this);
+              
+          });
+      };
 
         for (i=0; i<100; i++){
+          var thLatLng = new google.maps.LatLng(elements.people[i].lat, 
+            elements.people[i].lng
+          );
 
-          var thLatLng = {
-            lat: elements.people[i].lat, 
-            lng: elements.people[i].lng
-          };
+         var distance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, thLatLng);
 
-          marker = new google.maps.Marker({
+
+
+        
+        distance = distance.toFixed(2);
+
+        marker = new google.maps.Marker({
           position: thLatLng,
-          title: elements.people[i].login,
+          title: elements.people[i].login+"<p>"+"Distance: "+distance+" m"+"</p>",
           icon: 'blue_MarkerA.png'
-          });
+        });
 
-          marker.setMap(map);
+          marker.setMap(map);    
+
           google.maps.event.addListener(marker, 'click', function() {
-            //infoWindow = new google.maps.InfoWindow;
             infoWindow.setContent(marker.title);
             infoWindow.open(map, this);
-
           })
         }
       };
