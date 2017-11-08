@@ -42,6 +42,7 @@
         if (strlat > 0){
         var key = login.concat(latxmr, strlat, lngxmr, strlng);
         
+
         renderMap();
         getJSON(key);
         }
@@ -71,6 +72,7 @@
           title: importantlm,
           icon: 'purple_MarkerA.png'
           });
+
           marker.setMap(map);
     
           // Open info window on click of marker
@@ -91,14 +93,15 @@
           );
          
           var distance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, thLatLng);
-        
-          /*if (mindist =! -999) {
+    /*    
+          if (mindist =! -999) {
             if (distance <= mindist){
               mindist = distance;
-              importantlm = elements.people[i].login+"<p>"+"Distance: "+distance+" m"+"</p>";
+              importantlm = elements.landmarks[i].properties["Location_Name"]+"<p>"+"Distance: "+distance+" m"+"</p>";
+              RenderMap();
             };
           };   
-          */   
+     */ //we still need to make this work and to put the polyline (which is in google docs, safe and sound)        
           distance = distance.toFixed(2);
 
           marker = new google.maps.Marker({
@@ -114,7 +117,8 @@
               
           });
       };
-
+      }//TEMPORARY MARK
+/*
         for (i=0; i<100; i++){
           var thLatLng = new google.maps.LatLng(elements.people[i].lat, 
             elements.people[i].lng
@@ -122,10 +126,7 @@
 
          var distance = google.maps.geometry.spherical.computeDistanceBetween(myLatLng, thLatLng);
 
-
-
-        
-        distance = distance.toFixed(2);
+         distance = distance.toFixed(2);
 
         marker = new google.maps.Marker({
           position: thLatLng,
@@ -136,12 +137,12 @@
           marker.setMap(map);    
 
           google.maps.event.addListener(marker, 'click', function() {
-            infoWindow.setContent(marker.title);
+            infoWindow.setContent(this.title);
             infoWindow.open(map, this);
           })
         }
       };
       
-
+*/
 
              
