@@ -51,13 +51,13 @@
 
     function getJSON(key){
          var request = new XMLHttpRequest();
-         request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
+         request.open("POST", "https://rocky-basin-93447.herokuapp.com/sendLocation", true);
          request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
          request.send(key);
          request.onreadystatechange = function() {
          if (request.readyState == 4 && request.status == 200)  {
            elements = JSON.parse(request.responseText);
-           //console.log(elements);
+           //console.log(request.responseText);
            themMap(elements);
            renderMap();
       }}
@@ -141,7 +141,7 @@
           }); 
           }//end of extremely long for loop   
 
-        for (i=0; i<100; i++){
+        for (i=0; i<elements.people.length; i++){
           var thLatLng = new google.maps.LatLng(elements.people[i].lat, 
             elements.people[i].lng
           );
